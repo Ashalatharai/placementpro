@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to PlacementMentor</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* Custom styles specifically for the landing page */
+    .landing-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 5%;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+    
+    .landing-logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .landing-nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .hero-section {
+      margin-top: 70px; /* Offset for fixed nav */
+      padding: 100px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+    }
+
+    .hero-section h1 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero-section p {
+      font-size: 18px;
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+      opacity: 0.9;
+    }
+
+    .features-section {
+      padding: 80px 5%;
+      background: var(--bg-secondary);
+      text-align: center;
+    }
+
+    .features-section h2 {
+      font-size: 32px;
+      color: var(--text-primary);
+      margin-bottom: 48px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      padding: 40px 30px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 30px var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .feature-card h3 {
+      font-size: 22px;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .landing-footer {
+      background: var(--bg-card);
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="landing-nav">
+    <div class="landing-logo">PlaceMentor</div>
+    <div class="landing-nav-links">
+      <a href="index.html" class="btn btn-secondary">Login</a>
+      <a href="register.html" class="btn btn-primary">Register</a>
+    </div>
+  </nav>
+
+  <header class="hero-section">
+    <h1>The Integrated Campus Career Suite</h1>
+    <p>Connecting students, training & placement officers, and alumni in one powerful platform to streamline the campus recruitment process.</p>
+    <a href="register.html" class="btn btn-primary" style="background: white; color: var(--primary); padding: 14px 32px; font-size: 16px;">Get Started Today</a>
+  </header>
+
+  <section class="features-section">
+    <h2>Built for Everyone on Campus</h2>
+    
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎓</div>
+        <h3>For Students</h3>
+        <p>Build your professional profile, automatically generate your resume, discover eligible placement drives, and book mentorship sessions with experienced alumni.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">💼</div>
+        <h3>For TPOs</h3>
+        <p>Create and manage placement drives, filter eligible students in seconds, track application statuses, and view rich analytics on campus placement success.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🤝</div>
+        <h3>For Alumni</h3>
+        <p>Give back to your college community by posting direct job referrals, scheduling 1-on-1 mentorship sessions, and guiding the next generation to success.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <p>&copy; 2026 PlaceMentor. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

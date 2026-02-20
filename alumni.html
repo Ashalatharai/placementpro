@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni Portal - PlaceMentor</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" data-testid="alumni-sidebar">
+      <div class="sidebar-header">
+        <h2>PlaceMentor</h2>
+        <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" data-testid="theme-toggle">🌙</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-page="overview" data-testid="nav-overview">
+          <span class="nav-icon">🏠</span>
+          <span>Overview</span>
+        </div>
+        <div class="nav-item" data-page="referrals" data-testid="nav-referrals">
+          <span class="nav-icon">🤝</span>
+          <span>My Referrals</span>
+        </div>
+        <div class="nav-item" data-page="mentorship" data-testid="nav-mentorship">
+          <span class="nav-icon">🎯</span>
+          <span>Mentorship Sessions</span>
+        </div>
+        <div class="nav-item" onclick="logout()" data-testid="nav-logout">
+          <span class="nav-icon">🚪</span>
+          <span>Logout</span>
+        </div>
+      </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <h1 id="pageTitle" data-testid="page-title">Alumni Portal</h1>
+        </div>
+        <div class="top-bar-right">
+          <div class="user-profile" data-testid="user-profile">
+            <div class="user-avatar" id="userAvatar">A</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Alumni</div>
+              <div class="user-role">Alumni</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content-area">
+        <!-- Overview Section -->
+        <div id="overviewSection" class="page-section">
+          <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="stat-card" data-testid="stat-referrals">
+              <div class="stat-header">
+                <span class="stat-title">My Referrals</span>
+                <div class="stat-icon blue">🤝</div>
+              </div>
+              <div class="stat-value" id="totalReferrals">0</div>
+            </div>
+            
+            <div class="stat-card" data-testid="stat-sessions">
+              <div class="stat-header">
+                <span class="stat-title">Mentorship Sessions</span>
+                <div class="stat-icon green">🎯</div>
+              </div>
+              <div class="stat-value" id="totalSessions">0</div>
+            </div>
+            
+            <div class="stat-card" data-testid="stat-impact">
+              <div class="stat-header">
+                <span class="stat-title">Students Helped</span>
+                <div class="stat-icon orange">❤️</div>
+              </div>
+              <div class="stat-value" id="studentsHelped">0</div>
+            </div>
+          </div>
+          
+          <div class="grid-2 mt-4">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Quick Actions</h3>
+              </div>
+              <div class="card-body">
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                  <button class="btn btn-primary" onclick="openPostReferralModal()" data-testid="post-referral-btn">
+                    💼 Post Job Referral
+                  </button>
+                  <button class="btn btn-secondary" onclick="switchPage('mentorship'); document.querySelector('[data-page=mentorship]').click();" data-testid="view-sessions-btn">
+                    📅 View Mentorship Sessions
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Your Impact</h3>
+              </div>
+              <div class="card-body">
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">
+                  Thank you for giving back to the community! Your guidance helps students achieve their career goals.
+                </p>
+                <div style="padding: 16px; background: rgba(37, 99, 235, 0.05); border-radius: 8px;">
+                  <div style="font-size: 24px; font-weight: 700; color: var(--primary);" id="impactScore">0</div>
+                  <div style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">Impact Score</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Referrals Section -->
+        <div id="referralsSection" class="page-section hidden">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">My Job Referrals</h3>
+              <button class="btn btn-primary btn-sm" onclick="openPostReferralModal()" data-testid="add-referral-btn">
+                + Post Referral
+              </button>
+            </div>
+            <div class="card-body">
+              <div id="myReferralsList"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mentorship Section -->
+        <div id="mentorshipSection" class="page-section hidden">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Mentorship Sessions</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      <th>Topic</th>
+                      <th>Date & Time</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="sessionsTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Post Referral Modal -->
+  <div id="postReferralModal" class="modal" data-testid="referral-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Post Job Referral</h3>
+        <div class="modal-close" onclick="closePostReferralModal()" data-testid="close-modal">&times;</div>
+      </div>
+      <div class="modal-body">
+        <form id="referralForm" data-testid="referral-form">
+          <div class="form-group">
+            <label for="refCompany">Company Name</label>
+            <input type="text" id="refCompany" data-testid="ref-company" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="refRole">Job Role</label>
+            <input type="text" id="refRole" data-testid="ref-role" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="refDescription">Description & How to Apply</label>
+            <textarea id="refDescription" data-testid="ref-description" rows="4" placeholder="Describe the opportunity and how students can reach out to you for referral..." required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closePostReferralModal()" data-testid="cancel-referral">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="postReferral()" data-testid="submit-referral">Post Referral</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Chatbot -->
+  <div class="chatbot-widget" data-testid="chatbot-widget">
+    <div class="chatbot-button" onclick="toggleChatbot()" data-testid="chatbot-button">🤖</div>
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <h4>PlacementBot</h4>
+        <div class="modal-close" onclick="toggleChatbot()">&times;</div>
+      </div>
+      <div class="chatbot-messages" id="chatMessages"></div>
+      <div class="chatbot-input">
+        <input type="text" id="chatInput" data-testid="chat-input" placeholder="Ask me anything..." onkeypress="handleChatEnter(event)">
+        <button onclick="sendMessage()" data-testid="chat-send">Send</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/theme.js"></script>
+   <script src="assets/js/chatbot.js"></script>
+  <script src="assets/js/alumni.js"></script>
+</body>
+</html>

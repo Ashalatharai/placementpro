@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TPO Dashboard - PlaceMentor</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" data-testid="tpo-sidebar">
+      <div class="sidebar-header">
+        <h2>PlaceMentor</h2>
+        <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" data-testid="theme-toggle">🌙</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-page="overview" data-testid="nav-overview">
+          <span class="nav-icon">🏠</span>
+          <span>Overview</span>
+        </div>
+        <div class="nav-item" data-page="drives" data-testid="nav-drives">
+          <span class="nav-icon">💼</span>
+          <span>Placement Drives</span>
+        </div>
+        <div class="nav-item" data-page="students" data-testid="nav-students">
+          <span class="nav-icon">🎓</span>
+          <span>Students</span>
+        </div>
+        <div class="nav-item" data-page="analytics" data-testid="nav-analytics">
+          <span class="nav-icon">📊</span>
+          <span>Analytics</span>
+        </div>
+        <div class="nav-item" onclick="logout()" data-testid="nav-logout">
+          <span class="nav-icon">🚪</span>
+          <span>Logout</span>
+        </div>
+      </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <h1 id="pageTitle" data-testid="page-title">TPO Dashboard</h1>
+        </div>
+        <div class="top-bar-right">
+          <div class="user-profile" data-testid="user-profile">
+            <div class="user-avatar" id="userAvatar">T</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">TPO</div>
+              <div class="user-role">Training & Placement Officer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content-area">
+        <!-- Overview Section -->
+        <div id="overviewSection" class="page-section">
+          <div class="stats-grid">
+            <div class="stat-card" data-testid="stat-students">
+              <div class="stat-header">
+                <span class="stat-title">Total Students</span>
+                <div class="stat-icon blue">🎓</div>
+              </div>
+              <div class="stat-value" id="totalStudents">0</div>
+              <div class="stat-change">
+                <span>↑ 12% from last month</span>
+              </div>
+            </div>
+            
+            <div class="stat-card" data-testid="stat-drives">
+              <div class="stat-header">
+                <span class="stat-title">Active Drives</span>
+                <div class="stat-icon green">💼</div>
+              </div>
+              <div class="stat-value" id="activeDrives">0</div>
+              <div class="stat-change">
+                <span>↑ 8% from last month</span>
+              </div>
+            </div>
+            
+            <div class="stat-card" data-testid="stat-placed">
+              <div class="stat-header">
+                <span class="stat-title">Placed Students</span>
+                <div class="stat-icon orange">✅</div>
+              </div>
+              <div class="stat-value" id="placedStudents">0</div>
+              <div class="stat-change">
+                <span>↑ 25% from last month</span>
+              </div>
+            </div>
+            
+            <div class="stat-card" data-testid="stat-applications">
+              <div class="stat-header">
+                <span class="stat-title">Applications</span>
+                <div class="stat-icon red">📄</div>
+              </div>
+              <div class="stat-value" id="totalApplications">0</div>
+              <div class="stat-change">
+                <span>↑ 18% from last month</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Recent Placement Drives</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th>Role</th>
+                      <th>Min CGPA</th>
+                      <th>Applications</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentDrivesTable">
+                    <tr>
+                      <td colspan="5" style="text-align: center; padding: 40px;">Loading...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Drives Section -->
+        <div id="drivesSection" class="page-section hidden">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Placement Drives</h3>
+              <button class="btn btn-primary btn-sm" onclick="openCreateDriveModal()" data-testid="create-drive-btn">
+                + Create Drive
+              </button>
+            </div>
+            <div class="card-body">
+              <div id="drivesContainer" class="drive-feed"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Students Section -->
+        <div id="studentsSection" class="page-section hidden">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Student Profiles</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Branch</th>
+                      <th>CGPA</th>
+                      <th>Backlogs</th>
+                      <th>Skills</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentsTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Analytics Section -->
+        <div id="analyticsSection" class="page-section hidden">
+          <div class="stats-grid">
+            <div class="card" style="grid-column: span 2;">
+              <div class="card-header">
+                <h3 class="card-title">Placement Statistics</h3>
+              </div>
+              <div class="card-body">
+                <canvas id="placementChart" data-testid="placement-chart"></canvas>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid-2 mt-4">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Department-wise Placements</h3>
+              </div>
+              <div class="card-body">
+                <canvas id="departmentChart" data-testid="department-chart"></canvas>
+              </div>
+            </div>
+            
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Application Status</h3>
+              </div>
+              <div class="card-body">
+                <canvas id="statusChart" data-testid="status-chart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- Create Drive Modal -->
+  <div id="createDriveModal" class="modal" data-testid="create-drive-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create Placement Drive</h3>
+        <div class="modal-close" onclick="closeCreateDriveModal()" data-testid="close-modal">&times;</div>
+      </div>
+      <div class="modal-body">
+        <form id="createDriveForm">
+          <div class="form-group">
+            <label for="companyName">Company Name</label>
+            <input type="text" id="companyName" data-testid="drive-company" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="roleName">Role</label>
+            <input type="text" id="roleName" data-testid="drive-role" required>
+          </div>
+          
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="minCGPA">Minimum CGPA</label>
+              <input type="number" id="minCGPA" data-testid="drive-cgpa" step="0.1" min="0" max="10" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="maxBacklogs">Max Backlogs Allowed</label>
+              <input type="number" id="maxBacklogs" data-testid="drive-backlogs" min="0" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="branches">Allowed Branches (comma-separated)</label>
+            <input type="text" id="branches" data-testid="drive-branches" placeholder="Computer Science, IT, Electronics" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="skills">Required Skills (comma-separated)</label>
+            <input type="text" id="skills" data-testid="drive-skills" placeholder="JavaScript, React, Node.js" required>
+          </div>
+          
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="ctc">CTC Package</label>
+              <input type="text" id="ctc" data-testid="drive-ctc" placeholder="₹10 LPA" required>
+            </div>
+
+            <div class="form-group">
+              <label for="deadline">Application Deadline</label>
+              <input type="date" id="deadline" data-testid="drive-deadline" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" data-testid="drive-description" rows="3" required></textarea>
+          </div>
+          
+         <div class="card mt-2" style="background: rgba(37, 99, 235, 0.05); text-align: center; padding: 15px; border: 1px dashed var(--primary);">
+  <h4 style="font-size: 14px; font-weight: 600; margin-bottom: 8px;">Target Audience</h4>
+  
+  <div id="eligibleCount" data-testid="eligible-count" style="font-size: 32px; font-weight: 700; color: var(--primary);">0</div>
+  
+  <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">students match these criteria</div>
+  
+  <button type="button" id="notifyBtn" class="btn btn-primary btn-sm" onclick="notifyEligibleStudents()" disabled style="width: 100%; transition: all 0.3s ease;">
+    📢 Notify All Eligible
+  </button>
+</div> 
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeCreateDriveModal()" data-testid="cancel-drive">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="createDrive()" data-testid="submit-drive">Create Drive</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Chatbot -->
+  <div class="chatbot-widget" data-testid="chatbot-widget">
+    <div class="chatbot-button" onclick="toggleChatbot()" data-testid="chatbot-button">🤖</div>
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <h4>PlacementBot</h4>
+        <div class="modal-close" onclick="toggleChatbot()">&times;</div>
+      </div>
+      <div class="chatbot-messages" id="chatMessages"></div>
+      <div class="chatbot-input">
+        <input type="text" id="chatInput" data-testid="chat-input" placeholder="Ask me anything...">
+        <button onclick="sendMessage()" data-testid="chat-send">Send</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/sampleData.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+  <script src="assets/js/tpo.js"></script>
+</body>
+</html>

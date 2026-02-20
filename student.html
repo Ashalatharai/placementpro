@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Portal - PlaceMentor</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" data-testid="student-sidebar">
+      <div class="sidebar-header">
+        <h2>PlaceMentor</h2>
+        <div class="theme-toggle" id="themeToggle" onclick="toggleTheme()" data-testid="theme-toggle">🌙</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-page="profile" data-testid="nav-profile">
+          <span class="nav-icon">👤</span>
+          <span>My Profile</span>
+        </div>
+        <div class="nav-item" data-page="opportunities" data-testid="nav-opportunities">
+          <span class="nav-icon">💼</span>
+          <span>Opportunities</span>
+        </div>
+        <div class="nav-item" data-page="applications" data-testid="nav-applications">
+          <span class="nav-icon">📄</span>
+          <span>My Applications</span>
+        </div>
+        <div class="nav-item" data-page="referrals" data-testid="nav-referrals">
+          <span class="nav-icon">🤝</span>
+          <span>Referrals</span>
+        </div>
+        <div class="nav-item" data-page="mentorship" data-testid="nav-mentorship">
+          <span class="nav-icon">🎯</span>
+          <span>Mentorship</span>
+        </div>
+        <div class="nav-item" data-page="resume" data-testid="nav-resume">
+          <span class="nav-icon">📝</span>
+          <span>Resume Builder</span>
+        </div>
+        <div class="nav-item" onclick="logout()" data-testid="nav-logout">
+          <span class="nav-icon">🚪</span>
+          <span>Logout</span>
+        </div>
+      </nav>
+    </aside>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="top-bar">
+        <div class="top-bar-left">
+          <h1 id="pageTitle" data-testid="page-title">Student Portal</h1>
+        </div>
+        <div class="top-bar-right">
+          <div class="user-profile" data-testid="user-profile">
+            <div class="user-avatar" id="userAvatar">S</div>
+            <div class="user-info">
+              <div class="user-name" id="userName">Student</div>
+              <div class="user-role">Student</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content-area">
+        <!-- Profile Section -->
+        <div id="profileSection" class="page-section">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">My Profile</h3>
+              <span id="profileStatus" class="badge badge-info" data-testid="profile-status">Complete your profile</span>
+            </div>
+            <div class="card-body">
+              <form id="profileForm" data-testid="profile-form">
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label for="cgpa">CGPA</label>
+                    <input type="number" id="cgpa" data-testid="profile-cgpa" step="0.01" min="0" max="10" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="branch">Branch</label>
+                    <select id="branch" data-testid="profile-branch" required>
+                      <option value="">Select Branch</option>
+                      <option value="Computer Science">Computer Science</option>
+                      <option value="Information Technology">Information Technology</option>
+                      <option value="Electronics">Electronics</option>
+                      <option value="Mechanical">Mechanical</option>
+                      <option value="Civil">Civil</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label for="backlogs">Active Backlogs</label>
+                    <input type="number" id="backlogs" data-testid="profile-backlogs" min="0" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" data-testid="profile-phone" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="skills">Skills (comma-separated)</label>
+                  <input type="text" id="skills" data-testid="profile-skills" placeholder="JavaScript, React, Python, Node.js" required>
+                </div>
+                
+                <div class="form-group">
+                  <label for="resume">Resume Link/File Name</label>
+                  <input type="text" id="resume" data-testid="profile-resume" placeholder="resume.pdf or https://..." required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" data-testid="save-profile">Save Profile</button>
+              </form>
+            </div>
+          </div>
+          
+          <div id="skillGapSection" class="hidden">
+            <div class="card mt-4">
+              <div class="card-header">
+                <h3 class="card-title">Skill Gap Analysis</h3>
+              </div>
+              <div class="card-body">
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">Compare your skills with current opportunities</p>
+                <div id="skillGapContent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Opportunities Section -->
+        <div id="opportunitiesSection" class="page-section hidden">
+          <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="stat-card" data-testid="stat-eligible">
+              <div class="stat-header">
+                <span class="stat-title">Eligible Drives</span>
+                <div class="stat-icon green">✅</div>
+              </div>
+              <div class="stat-value" id="eligibleDrives">0</div>
+            </div>
+            
+            <div class="stat-card" data-testid="stat-total-drives">
+              <div class="stat-header">
+                <span class="stat-title">Total Drives</span>
+                <div class="stat-icon blue">💼</div>
+              </div>
+              <div class="stat-value" id="totalDrives">0</div>
+            </div>
+            
+            <div class="stat-card" data-testid="stat-applied">
+              <div class="stat-header">
+                <span class="stat-title">Applied</span>
+                <div class="stat-icon orange">📄</div>
+              </div>
+              <div class="stat-value" id="appliedCount">0</div>
+            </div>
+          </div>
+          
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3 class="card-title">Live Placement Drives</h3>
+            </div>
+            <div class="card-body">
+              <div id="driveFeed" class="drive-feed"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Applications Section -->
+        <div id="applicationsSection" class="page-section hidden">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">My Applications</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Company</th>
+                      <th>Role</th>
+                      <th>Applied On</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="applicationsTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Referrals Section -->
+        <div id="referralsSection" class="page-section hidden">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Job Referrals</h3>
+            </div>
+            <div class="card-body">
+              <div id="referralsList"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Mentorship Section -->
+        <div id="mentorshipSection" class="page-section hidden">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Book Mentorship Session</h3>
+            </div>
+            <div class="card-body">
+              <form id="mentorshipForm" data-testid="mentorship-form">
+                <div class="form-group">
+                  <label for="alumniSelect">Select Alumni Mentor</label>
+                  <select id="alumniSelect" data-testid="mentor-select" required>
+                    <option value="">Choose a mentor</option>
+                  </select>
+                </div>
+                
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label for="sessionDate">Preferred Date</label>
+                    <input type="date" id="sessionDate" data-testid="session-date" required>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="sessionTime">Preferred Time</label>
+                    <input type="time" id="sessionTime" data-testid="session-time" required>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label for="sessionTopic">Topic/Agenda</label>
+                  <textarea id="sessionTopic" data-testid="session-topic" rows="3" placeholder="What would you like to discuss?" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" data-testid="book-session">Book Session</button>
+              </form>
+            </div>
+          </div>
+          
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3 class="card-title">My Bookings</h3>
+            </div>
+            <div class="card-body">
+              <div class="table-container">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Mentor</th>
+                      <th>Topic</th>
+                      <th>Date & Time</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bookingsTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+<div id="resumeSection" class="page-section hidden">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Automatic Resume Generator</h3>
+            </div>
+            <div class="card-body">
+              <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                Fill in your extra details below. We will automatically generate a professional summary based on your profile skills!
+              </p>
+              
+              <div id="resumeBuilderForm" style="margin-bottom: 32px; padding: 20px; background: rgba(37, 99, 235, 0.05); border-radius: 8px; border: 1px solid var(--border);">
+                <div class="form-group">
+                  <label for="resInputProjects">Key Projects (One per line)</label>
+                  <textarea id="resInputProjects" rows="3" placeholder="Example:&#10;PlaceMentor: Built a full-stack career suite using HTML, CSS, JS...&#10;WeatherApp: Created a React app consuming REST APIs..."></textarea>
+                </div>
+                
+                <div class="grid-2">
+                  <div class="form-group">
+                    <label for="resInputCerts">Certifications (One per line)</label>
+                    <textarea id="resInputCerts" rows="2" placeholder="AWS Cloud Practitioner&#10;Full-Stack Web Development Bootcamp"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="resInputAchievements">Achievements (One per line)</label>
+                    <textarea id="resInputAchievements" rows="2" placeholder="1st Place in University Hackathon 2025&#10;Published article on Web Development"></textarea>
+                  </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="generateResume()" data-testid="generate-resume-btn" style="width: 100%;">
+                  ⚡ Generate My Resume
+                </button>
+              </div>
+
+              <div id="resumeEmptyState" style="text-align: center; padding: 40px; color: var(--text-secondary); border: 1px dashed var(--border-color); border-radius: 8px;">
+                <span style="font-size: 48px; display: block; margin-bottom: 16px;">📄</span>
+                <p>Fill out the details above and click "Generate" to preview your resume.</p>
+              </div>
+
+              <div id="resumePreview" class="resume-template" style="display: none; border: 1px solid #e2e8f0; padding: 40px; border-radius: 8px; background: #ffffff; color: #0f172a; box-shadow: 0 4px 6px rgba(0,0,0,0.05); max-width: 800px; margin: 0 auto;">
+                
+                <div style="text-align: center; border-bottom: 2px solid #2563eb; padding-bottom: 20px; margin-bottom: 20px;">
+                  <h1 id="resName" style="margin: 0; font-size: 28px; font-weight: bold; color: #1e293b;">Student Name</h1>
+                  <p style="margin: 8px 0 0; color: #475569; font-size: 14px;">
+                    <span id="resEmail">email@example.com</span> | <span id="resPhone">+91 XXXXX XXXXX</span>
+                  </p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <p id="resSummary" style="margin: 0; line-height: 1.6; color: #334155; font-style: italic;"></p>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                  <h3 style="color: #2563eb; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Education</h3>
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <strong>B.Tech - <span id="resBranch">Branch Name</span></strong>
+                    <span style="color: #64748b;">Current</span>
+                  </div>
+                  <ul style="margin: 0; padding-left: 20px; color: #334155;">
+                    <li>Cumulative Grade Point Average (CGPA): <strong id="resCgpa">0.0</strong></li>
+                    <li>Active Backlogs: <strong id="resBacklogs">0</strong></li>
+                  </ul>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                  <h3 style="color: #2563eb; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Technical Skills</h3>
+                  <p id="resSkills" style="margin: 0; line-height: 1.6; color: #334155;">N/A</p>
+                </div>
+
+                <div id="resSectionProjects" style="margin-bottom: 20px; display: none;">
+                  <h3 style="color: #2563eb; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Projects</h3>
+                  <ul id="resProjects" style="margin: 0; padding-left: 20px; color: #334155; line-height: 1.6;"></ul>
+                </div>
+
+                <div id="resSectionCerts" style="margin-bottom: 20px; display: none;">
+                  <h3 style="color: #2563eb; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Certifications</h3>
+                  <ul id="resCerts" style="margin: 0; padding-left: 20px; color: #334155; line-height: 1.6;"></ul>
+                </div>
+
+                <div id="resSectionAchievements" style="margin-bottom: 20px; display: none;">
+                  <h3 style="color: #2563eb; font-size: 16px; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Achievements</h3>
+                  <ul id="resAchievements" style="margin: 0; padding-left: 20px; color: #334155; line-height: 1.6;"></ul>
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;" class="no-print">
+                  <button class="btn btn-success" onclick="window.print()" id="downloadResumeBtn">
+                    🖨️ Print / Save as PDF
+                  </button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+  </div>
+  
+  <!-- Chatbot -->
+  <div class="chatbot-widget" data-testid="chatbot-widget">
+    <div class="chatbot-button" onclick="toggleChatbot()" data-testid="chatbot-button">🤖</div>
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <h4>PlacementBot</h4>
+        <div class="modal-close" onclick="toggleChatbot()">&times;</div>
+      </div>
+      <div class="chatbot-messages" id="chatMessages"></div>
+      <div class="chatbot-input">
+        <input type="text" id="chatInput" data-testid="chat-input" placeholder="Ask me anything..." onkeypress="handleChatEnter(event)">
+        <button onclick="sendMessage()" data-testid="chat-send">Send</button>
+      </div>
+    </div>
+  </div>
+  
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/theme.js"></script>
+  <script src="assets/js/sampleData.js"></script>
+  <script src="assets/js/chatbot.js"></script>
+  <script src="assets/js/student.js"></script>
+</body>
+</html>
