@@ -18,29 +18,25 @@ PlaceMentor solves these challenges through automation and intelligent filtering
 Create Placement Drives<br>
 Define eligibility criteria:<br>
 Minimum CGPA<br>
-Maximum Backlogs
-Allowed Branches
-Criteria Engine to filter eligible students instantly
-Eligible student count display
-Notify eligible students
-👩‍🎓 2. Student Dashboard
-Profile Management (CGPA, Branch, Skills, Projects)
-Resume Generator
-View Eligible Drives
-Application Tracker:
-Applied
-Interview Scheduled
+Maximum Backlogs<br>
+Allowed Branches<br>
+Criteria Engine to filter eligible students instantly<br>
+Eligible student count display<br>
+Notify eligible students<br>
+👩‍🎓 2. Student Dashboard<br>
+Profile Management (CGPA, Branch, Skills, Projects)<br>
+Resume Generator<br>
+View Eligible Drives<br>
+Application Tracker:<br><br>
 
-🤝 3. Alumni Portal
-Post Job Referrals
-Mentorship Slot Booking
-Direct connection between alumni and juniors
+🤝 3. Alumni Portal<br>
+Post Job Referrals<br>
+Mentorship Slot Booking<br>
+Direct connection between alumni and juniors<br><br>
 
 
-🤖 5. PlacementBot
-24/7 Virtual Assistant
-Answers common queries:
-Cutoff
-Interview date
-Venue
-Reduces repetitive workload of TPO
+🤖 5. PlacementBot<br>
+24/7 Virtual Assistant<br>
+Answers common queries:<br>
+Cutoff<br>
+
