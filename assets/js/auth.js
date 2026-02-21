@@ -39,7 +39,7 @@ function register(event) {
   showMessage('Registration successful! Please login...', 'success');
   
   setTimeout(() => {
-    window.location.href = 'index.html'; 
+    window.location.href = 'login.html'; 
   }, 1500);
 }
 
@@ -78,7 +78,7 @@ function login(event) {
 
 function logout() {
   Storage.clearSession();
-  window.location.href = 'index.html';
+  window.location.href = 'login.html';
 }
 
 function redirectToDashboard(role) {
@@ -88,19 +88,19 @@ function redirectToDashboard(role) {
     'alumni': 'alumni.html'
   };
   
-  window.location.href = dashboardMap[role] || 'index.html';
+  window.location.href = dashboardMap[role] || 'login.html';
 }
 
 function checkAuth(requiredRole = null) {
   const session = Storage.getSession();
   
   if (!session) {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
     return null;
   }
   
   if (requiredRole && session.role !== requiredRole) {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
     return null;
   }
   
